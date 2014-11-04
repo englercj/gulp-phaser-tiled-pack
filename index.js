@@ -4,7 +4,7 @@ var through = require('through2'),
     path = require('path'),
     File = require('vinyl'),
     utils = require('../../src/utils'),
-    app = 'gulp-tiled-pack';
+    app = 'gulp-phaser-tiled-pack';
 
 function tilemapPack(options) {
     options = options || {};
@@ -16,7 +16,7 @@ function tilemapPack(options) {
             generated: Date.now().toString(),
             version: '1.0',
             app: app,
-            url: 'https://github.com/englercj/phaser-tiled'
+            url: 'https://github.com/englercj/gulp-phaser-tiled-pack'
         }
     };
 
