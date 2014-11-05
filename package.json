@@ -1,6 +1,6 @@
 {
   "name": "gulp-phaser-tiled-pack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Creates a phaser asset pack file based on tiled maps",
   "author": "Chad Engler <chad@pantherdev.com>",
   "license": "MIT",
