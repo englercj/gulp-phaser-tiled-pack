@@ -58,20 +58,41 @@ function tilemapPack(options) {
                     tilesets = xml ? fdata.tileset : fdata.tilesets,
                     imglayers = xml ? fdata.imagelayer : fdata.layers.filter(function (l) { return l.type === 'imagelayer'; }),
                     imgsrc,
-                    i;
+                    tiles,
+                    i, t;
 
                 if (tilesets) {
                     for(i = 0; i < tilesets.length; ++i) {
-                        imgsrc = xml ? tilesets[i].image[0].$.source : tilesets[i].image;
+                        // this is a multi-image tileset
+                        if (!tilesets[i].image) {
+                            tiles = xml ? tilesets[i].tile : tilesets[i].tiles;
 
-                        assets.push({
-                            type: 'image',
-                            subtype: 'tileset',
-                            key: cacheKey(key, 'tileset', (xml ? tilesets[i].$.name : tilesets[i].name)),
-                            name: (xml ? tilesets[i].$.name : tilesets[i].name),
-                            url: path.join(options.baseUrl, relDir, imgsrc).replace(/\\/g, '/'),
-                            overwrite: false
-                        });
+                            // can be an object keys by ID, or array of tile xml objects
+                            for (t in tiles) {
+                                imgsrc = xml ? tiles[t].image[0].$.source : tiles[t].image;
+
+                                assets.push({
+                                    type: 'image',
+                                    subtype: 'tileset_image',
+                                    key: cacheKey(key, 'tileset_image_' + (xml ? tiles[t].$.id : t), (xml ? tilesets[i].$.name : tilesets[i].name)),
+                                    name: (xml ? tilesets[i].$.name : tilesets[i].name) + '_image_' + (xml ? tiles[t].$.id : t),
+                                    url: path.join(options.baseUrl, relDir, imgsrc).replace(/\\/g, '/'),
+                                    overwrite: false
+                                });
+                            }
+                        }
+                        else {
+                            imgsrc = xml ? tilesets[i].image[0].$.source : tilesets[i].image;
+
+                            assets.push({
+                                type: 'image',
+                                subtype: 'tileset',
+                                key: cacheKey(key, 'tileset', (xml ? tilesets[i].$.name : tilesets[i].name)),
+                                name: (xml ? tilesets[i].$.name : tilesets[i].name),
+                                url: path.join(options.baseUrl, relDir, imgsrc).replace(/\\/g, '/'),
+                                overwrite: false
+                            });
+                        }
                     }
                 }
 
